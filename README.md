@@ -1,73 +1,31 @@
-**🛒 Java E-Commerce System**
+# Java Project Showcase
 
-This is a simple Java-based E-Commerce system that demonstrates core object-oriented concepts such as:
+A collection of Java projects demonstrating advanced OOP principles, design patterns, and clean software architecture.
 
-* Encapsulation
-* Abstraction
-* Interfaces
-* Composition
+## Repository Structure
 
-It simulates an online store where a customer can browse products, add them to a cart, checkout, and view shipping info.
-
----
-
-**📂 Project Structure**
-
-```
-src/
-├── Cart.java
-├── CartItem.java
-├── Customer.java
-├── Inventory.java
-├── Main.java
-├── Product.java
-├── Shippable.java
-└── ShippingService.java
-```
+| Project | Description | Key Technical Signal |
+| :--- | :--- | :--- |
+| [**Bookstore**](./Bookstore) | Advanced inventory management system. | Registry Pattern, OCP, Hybrid Storage |
+| [**E-Commerce**](./E-Commerce) | High-fidelity store storefront simulation. | Interface Abstraction, Atomic Validation |
 
 ---
 
-**🚀 Features**
+## Projects Overview
 
-* Add and manage products in inventory
-* Customer shopping cart with quantity handling
-* Shipping fees based on items that require shipping
-* Checkout with balance deduction
-* Inventory updates after purchase
-* Basic error handling (insufficient stock, balance, etc.)
+### 1. Bookstore (Advanced Architecture)
+An extensible system designed for scalability, allowing the integration of diverse book types and purchase behaviors without disrupting core logic.
 
----
+#### **Design Highlights**
+- **Registry Pattern (OCP):** New book types (PDF, Paper, Audiobook, Comic) are registered via `BookTypeRegistry` using Functional Interfaces and Lambdas — ensuring zero core logic modifications for feature extensions.
+- **Dual-Index Inventory:** Implemented a hybrid index system using ISBN (`HashMap` for $O(1)$ lookup) and Title-based search to optimize retrieval performance.
+- **Two-Pass Safe Removal:** Managed outdated inventory using a two-pass collection-and-purge strategy to prevent `ConcurrentModificationException` during state transitions.
+- **Validation:** Integrated comprehensive input sanitization for quantities, emails, and address formats with proper exception handling.
 
-**📦 How to Run**
+### 2. Simple E-Commerce (SOLID Principles)
+A clean implementation of a retail simulation focusing on separation of concerns and data integrity.
 
-Requirements: Java SDK 8+
-
-1. Clone the repository
-
-```bash
-git clone https://github.com/Youssefahmed88/E-Commerce-System.git
-```
-
-2. Go to the project folder
-
-```bash
-cd E-Commerce-System
-```
-
-3. Compile and run the app
-
-```bash
-javac src/*.java
-java src.Main
-```
-
----
-
-**👨‍💼 Author**
-Youssef Ahmed
-Computer Science Student | Offensive Security Engineer | Web3 Developer
-
----
-
-**📜 License**
-MIT License — This project is licensed for educational and personal use only.
+#### **Design Highlights**
+- **Shippable Interface:** Utilized interface-based abstraction to decouple physical shipping logic from digital asset delivery, ensuring a clean inheritance hierarchy.
+- **Two-Pass Stock Validation:** Implemented an "All-or-Nothing" validation pass. The system verifies all cart item quantities before any inventory reduction, maintaining data consistency.
+- **Separation of Concerns:** Rigidly decoupled responsibilities across `Cart`, `Inventory`, `Customer`, and `ShippingService` to ensure high maintainability and testability.

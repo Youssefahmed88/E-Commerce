@@ -1,60 +1,30 @@
-# Quantum Bookstore
+# Bookstore
 
-Quantum Bookstore is a simple inventory and purchase management system designed to handle different types of books (e.g., PDF, Paper, Audiobook, Comic) with flexible purchase behaviors depending on the book type.
+A type-extensible inventory and purchase management system built around SOLID design principles.
 
----
+## Design Highlights
 
-## Features
+- **Registry Pattern (OCP):** New book types (PDF, Paper, Audiobook, Comic) are registered via `BookTypeRegistry` using Functional Interfaces and Lambdas — no core logic changes required.
+- **Dual-Index Inventory:** Books are indexed by both ISBN (`O(1)` lookup) and Title for fast retrieval.
+- **Two-Pass Removal:** Outdated books are collected then removed in a separate pass to avoid `ConcurrentModificationException`.
+- **Validation:** Input checks on quantity, email, address, and stock availability with proper exception handling.
 
-- Manage books inventory with quantities.
-- Support multiple book types with type-specific purchase handling.
-- Customers can checkout books, and the system validates purchase details.
-- Extensible design allows adding new book types easily without modifying core logic.
-- Remove outdated books from inventory based on age.
-- Error handling for invalid purchases like insufficient stock, invalid emails, or unknown book types.
+## Structure
 
----
+```
+src/
+├── Book.java               # Book entity + delivery delegation
+├── BookTypeHandler.java     # Functional interface for purchase behavior
+├── BookTypeRegistry.java    # Registry for pluggable delivery handlers
+├── Customer.java            # Buyer logic and checkout flow
+├── Inventory.java           # Stock management with dual-index
+├── StockItem.java           # Wrapper for book + quantity
+└── Main.java                # Test cases
+```
 
-## Key Principles and Design
+## Run
 
-### 1. Separation of Concerns  
-The system separates responsibilities into distinct classes:
-
-- **Inventory**: Manages stock and purchase transactions.
-- **Book**: Contains book information and delegates purchase actions.
-- **BookTypeRegistry**: Registers and manages different purchase handlers for book types.
-- **Customer**: Represents a buyer interacting with the inventory.
-
-This improves **maintainability** and **clarity**.
-
-### 2. Extensibility  
-Adding a new book type is easy — just register a new handler in `BookTypeRegistry` with the purchase message format and logic, without changing other parts of the system.
-
-### 3. Robust Validation and Error Handling  
-Checks for valid quantities, emails, addresses, and stock availability ensure the system behaves correctly and safely.
-
----
-
-## Usage
-
-1. Register book types and their handlers via `BookTypeRegistry`.
-2. Add books to the inventory.
-3. Create customers and use their `checkout()` method to buy books.
-4. Handle exceptions for invalid operations gracefully.
-
----
-
-## Example Test Cases
-
-- Buying digital (PDF) and physical (paper) books.
-- Attempting to buy with invalid email or empty shipping address.
-- Buying more copies than available.
-- Trying to buy a book with an unknown type.
-- Removing outdated books based on publishing year.
-
----
-👨‍💼 Author Youssef Ahmed Computer Science Student | Offensive Security Engineer | Web3 Developer
-
----
-
-📜 License MIT License — This project is licensed for educational and personal use only.
+```bash
+javac src/*.java
+java -cp src Main
+```
